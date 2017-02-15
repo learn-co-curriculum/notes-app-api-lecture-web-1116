@@ -1,12 +1,14 @@
 class Api::V1::NotesController < ApplicationController
 
   def index
-    @notes = Note.all
+    @notes = current_user.notes
+
     render json: @notes
   end
 
   def create
     note = Note.new(note_params)
+    note.user = current_user
     if note.save
       render json: note
     else
